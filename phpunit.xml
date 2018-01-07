@@ -19,5 +19,8 @@
 
     <php>
         <env name="env" value="test" />
+        <env name="DB_DSN" value="sqlite::memory:" />
+        <env name="DB_USER" value="" />
+        <env name="DB_PASS" value="" />
     </php>
 </phpunit>

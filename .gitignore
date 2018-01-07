@@ -1,2 +1,4 @@
 vendor
 phinx.yml
+.idea
+.env

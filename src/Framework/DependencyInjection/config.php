@@ -31,9 +31,7 @@ $app['kernel'] = function($c) {
 };
 
 $app['db'] = function($c) {
-    return $_ENV['env'] === 'test'
-        ? new PDO('sqlite::memory:')
-        : new PDO('mysql:host=localhost;dbname=ticketbeast_raw', 'root', 'root');
+    return new PDO(getenv('DB_DSN'), getenv('DB_USER'), getenv('DB_PASS'));
 };
 
 $app['repositories.concert'] = function($c) {
