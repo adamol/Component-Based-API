@@ -1,4 +1,4 @@
-vendor
+vendor/
 phinx.yml
-.idea
+.idea/
 .env
