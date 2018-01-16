@@ -4,7 +4,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 
-$app = \App\Framework\DependencyInjection\Container::getInstance();
+$app = require __DIR__.'/../src/Framework/bootstrap.php';
 
 $request = Request::createFromGlobals();
 $response = $app['kernel']->handle($request);

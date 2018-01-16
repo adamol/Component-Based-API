@@ -8,38 +8,10 @@ require __DIR__.'/../DatabaseTestCase.php';
 //class ViewConcertTest extends PHPUnit\Framework\TestCase
 class ViewConcertTest extends DatabaseTestCase
 {
-//    public function setUp()
-//    {
-//        parent::setUp();
-//
-//        $this->app()['db']->exec("
-//            CREATE TABLE concerts (
-//                id INTEGER PRIMARY KEY,
-//                title VARCHAR(50) NOT NULL,
-//                subtitle VARCHAR(50) NOT NULL,
-//                date timestamp,
-//                ticket_price INT NOT NULL,
-//                venue VARCHAR(50) NOT NULL,
-//                venue_address VARCHAR(100) NOT NULL,
-//                city VARCHAR(100) NOT NULL,
-//                state VARCHAR(2) NOT NULL,
-//                zip VARCHAR(5) NOT NULL,
-//                additional_information VARCHAR(100) NOT NULL
-//            );
-//        ");
-//    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        $this->app()['db']->exec("DROP TABLE concerts");
-    }
-
     /** @test */
     function users_can_view_a_concert()
     {
-        $concert = $this->app()['repositories.concert']->create([
+        $concert = $this->app['repositories.concert']->create([
             'title' => 'The Red Chord',
             'subtitle' => 'with Animosity and Lethargy',
             'date' => Carbon::parse('December 13, 2016 8:00pm'),
@@ -67,16 +39,11 @@ class ViewConcertTest extends DatabaseTestCase
         $this->assertEquals('For tickets, call (555) 555-5555', $response->additional_information);
     }
 
-    protected function app()
-    {
-        return App\Framework\DependencyInjection\Container::getInstance();
-    }
-
     protected function request($url, $method)
     {
         $request = Request::create($url, $method);
 
-        $response = $this->app()['kernel']->handle($request);
+        $response = $this->app['kernel']->handle($request);
 
         return $response;
     }

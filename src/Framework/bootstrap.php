@@ -5,15 +5,30 @@ use Symfony\Component\Routing;
 
 $app = new \Pimple\Container();
 
-$app['routes']  = function($c) {
-    return require __DIR__.'/../../routes.php';
+/*
+ * Services
+ */
+$app['db'] = function($c) {
+    return new PDO(getenv('DB_DSN'), getenv('DB_USER'), getenv('DB_PASS'));
 };
 
+$app['repositories.concert'] = function($c) {
+    return new App\Repositories\ConcertRepository($c['db']);
+};
+
+/**
+ * Routes
+ */
+$routes = require __DIR__.'/../routes.php';
+
+/**
+ * Kernel
+ */
 $app['context'] = function($c) {
     return new Routing\RequestContext();
 };
-$app['matcher'] = function($c) {
-    return new Routing\Matcher\UrlMatcher($c['routes'], $c['context']);
+$app['matcher'] = function($c) use ($routes) {
+    return new Routing\Matcher\UrlMatcher($routes, $c['context']);
 };
 
 $app['controller_resolver'] = function($c) {
@@ -28,14 +43,6 @@ $app['kernel'] = function($c) {
         $c['controller_resolver'],
         $c['argument_resolver']
     );
-};
-
-$app['db'] = function($c) {
-    return new PDO(getenv('DB_DSN'), getenv('DB_USER'), getenv('DB_PASS'));
-};
-
-$app['repositories.concert'] = function($c) {
-    return new App\Repositories\ConcertRepository($c['db']);
 };
 
 return $app;
